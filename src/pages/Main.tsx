@@ -43,6 +43,10 @@ const StyledItemsContainer = styled.div`
     flex-wrap: wrap;
 `;
 
+const StyledDeleteFolder = styled(Button)`
+    color: red;
+`;
+
 export const MainPage = () => {
     const location = useLocation();
 
@@ -52,7 +56,8 @@ export const MainPage = () => {
             .filter((a) => !!a)
             .join(".") || "";
 
-    const { store, currentFolder, handleAddFolder, handleAddItem, handleDeleteItem } = useFolder(currentPath);
+    const { store, currentFolder, handleAddFolder, handleAddItem, handleDeleteItem, handleDeleteFolder } =
+        useFolder(currentPath);
 
     const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
     const [isItemModalOpen, setIsItemModalOpen] = useState(false);
@@ -62,6 +67,8 @@ export const MainPage = () => {
     if (!currentFolder) {
         return <div>Smth went wrong, folder is empty</div>;
     }
+
+    console.log(store);
 
     return (
         <>
@@ -113,13 +120,19 @@ export const MainPage = () => {
                 />
             )}
             <FloatingActions>
-                <Button type="link" onClick={() => setIsFolderModalOpen(true)}>
-                    Add Folder
-                </Button>
                 {breadcrumbs.length > 1 && (
                     <Button type="link" onClick={() => setIsItemModalOpen(true)}>
                         Add Item
                     </Button>
+                )}
+                <Button type="link" onClick={() => setIsFolderModalOpen(true)}>
+                    Add Folder
+                </Button>
+
+                {breadcrumbs.length > 1 && (
+                    <StyledDeleteFolder type="link" onClick={handleDeleteFolder}>
+                        Delete Folder
+                    </StyledDeleteFolder>
                 )}
             </FloatingActions>
         </>

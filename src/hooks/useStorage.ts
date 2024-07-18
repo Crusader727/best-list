@@ -3,6 +3,14 @@ import { defaultStorage, getStorage, setStorage } from "../utils/storage";
 import { CurrentFolder, Folder, Item, Storage } from "../types/store";
 import _ from "lodash";
 
+const getChildFolderIds = (hierarchy: Record<string, Object>): string[] => {
+    //@ts-ignore
+    return Object.keys(hierarchy).reduce((acc, el) => {
+        //@ts-ignore
+        return [...acc, el, ...getChildFolderIds(hierarchy[el])];
+    }, []);
+};
+
 export const useFolder = (path?: string) => {
     const [store, setStore] = useState<Storage>(defaultStorage);
 
@@ -25,6 +33,26 @@ export const useFolder = (path?: string) => {
     );
 
     const folderId = decodeURIComponent(path?.split(".").pop() || "");
+
+    const handleDeleteFolder = useCallback(() => {
+        if (path) {
+            let newHierarchy = JSON.parse(JSON.stringify(store.hierarchy));
+
+            const childFolders = [folderId, ...getChildFolderIds(_.get(newHierarchy, path || ""))];
+
+            const newFolders = { ...store.folders };
+            childFolders.forEach((f) => {
+                delete newFolders[f];
+            });
+
+            newHierarchy = _.omit(newHierarchy, [path]);
+
+            const newStore = { folders: newFolders, hierarchy: newHierarchy };
+
+            setStore(newStore);
+            setStorage(newStore);
+        }
+    }, [store, path, folderId]);
 
     const handleAddItem = useCallback(
         (item: Item) => {
@@ -70,5 +98,13 @@ export const useFolder = (path?: string) => {
         childFolders: path ? Object.keys(_.get(store.hierarchy, path) || {}) : Object.keys(store.hierarchy),
     };
 
-    return { store, currentFolder, hierarchy: store.hierarchy, handleAddFolder, handleAddItem, handleDeleteItem };
+    return {
+        store,
+        currentFolder,
+        hierarchy: store.hierarchy,
+        handleAddFolder,
+        handleAddItem,
+        handleDeleteItem,
+        handleDeleteFolder,
+    };
 };

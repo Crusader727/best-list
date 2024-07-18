@@ -1,10 +1,10 @@
-import React from "react";
 import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 import { MainPage } from "./pages/Main";
 import styled, { createGlobalStyle } from "styled-components";
 import { Layout } from "antd";
 import { NavigationPage } from "./pages/Navigation";
-const { Header, Content, Footer } = Layout;
+import { HeaderComonent } from "./components/Header";
+const { Content, Footer } = Layout;
 
 const StyledLayout = styled(Layout)`
     height: 100%;
@@ -29,26 +29,12 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const StyledLogo = styled.div`
-    color: white;
-    margin-right: 20px;
-`;
-
-const StyledLink = styled(Link)`
-    margin-left: 20px;
-    color: #1677ff;
-`;
-
 function App() {
     return (
         <BrowserRouter>
             <GlobalStyle />
             <StyledLayout>
-                <Header style={{ display: "flex", alignItems: "center" }}>
-                    <StyledLogo className="demo-logo">logo</StyledLogo>
-                    <StyledLink to="/">Main</StyledLink>
-                    <StyledLink to="/navigation">Navigation</StyledLink>
-                </Header>
+                <HeaderComonent />
                 <StyledContent>
                     <Routes>
                         <Route path="/navigation" element={<NavigationPage />} />

@@ -1,8 +1,3 @@
-- export button
-- import button
-- edit item, delete item
-- delete folder
-- edit folder name
 - add due date
 - add rating
 - add priority
