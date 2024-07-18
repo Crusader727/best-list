@@ -43,6 +43,23 @@ export const useFolder = (path?: string) => {
         },
         [store, folderId]
     );
+    const handleDeleteItem = useCallback(
+        (item: Item) => {
+            if (folderId) {
+                const newFolders = { ...store.folders };
+
+                if (newFolders[folderId]) {
+                    delete newFolders[folderId].items[item.id];
+                }
+
+                const newStore = { folders: newFolders, hierarchy: store.hierarchy };
+
+                setStore(newStore);
+                setStorage(newStore);
+            }
+        },
+        [store, folderId]
+    );
 
     if (!store) {
         return { currentFolder: undefined, hierarchy: {}, handleAddFolder, handleAddItem };
@@ -53,5 +70,5 @@ export const useFolder = (path?: string) => {
         childFolders: path ? Object.keys(_.get(store.hierarchy, path) || {}) : Object.keys(store.hierarchy),
     };
 
-    return { store, currentFolder, hierarchy: store.hierarchy, handleAddFolder, handleAddItem };
+    return { store, currentFolder, hierarchy: store.hierarchy, handleAddFolder, handleAddItem, handleDeleteItem };
 };

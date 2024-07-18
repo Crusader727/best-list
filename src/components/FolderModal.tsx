@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Button, Form, Input, Modal } from "antd";
+import { Form, Input, Modal } from "antd";
 import { Folder } from "../types/store";
 
 interface FolderModalProps {
