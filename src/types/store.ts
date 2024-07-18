@@ -1,16 +1,19 @@
 export interface Item {
+    id: string;
     name: string;
     description: string;
+    imageURL?: string;
 }
 
 export interface Folder {
+    id: string;
     name: string;
-    items: Array<Item>;
+    items: Record<string, Item>;
 }
 
 export interface CurrentFolder {
     name: string;
-    items: Array<Item>;
+    items: Record<string, Item>;
     childFolders: string[];
 }
 

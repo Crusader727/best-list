@@ -12,7 +12,7 @@ export const FolderModal = ({ handleOk, handleClose, isOpen = false }: FolderMod
     const [form] = Form.useForm();
 
     const onFinish = (values: { name: string }) => {
-        handleOk({ ...values, items: [] });
+        handleOk({ ...values, items: {}, id: `${values.name}-${Date.now()}` });
         form.resetFields();
         handleClose();
     };

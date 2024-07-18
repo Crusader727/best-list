@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import _ from "lodash";
 import { useState } from "react";
-import { Breadcrumb, Button, Card } from "antd";
+import { Breadcrumb, Button } from "antd";
 import styled from "styled-components";
 import { FolderModal } from "../components/FolderModal";
 import { useFolder } from "../hooks/useStorage";
 import { ItemModal } from "../components/ItemModal";
+import { ItemCard } from "../components/ItemCard";
 
 const ButtonsContainer = styled.div`
     display: flex;
@@ -23,11 +24,6 @@ const StyledFolder = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    margin-top: 20px;
-    margin-right: 20px;
-`;
-
-const StyledCard = styled(Card)`
     margin-top: 20px;
     margin-right: 20px;
 `;
@@ -56,7 +52,7 @@ export const MainPage = () => {
             .filter((a) => !!a)
             .join(".") || "";
 
-    const { currentFolder, handleAddFolder, handleAddItem } = useFolder(currentPath);
+    const { store, currentFolder, handleAddFolder, handleAddItem } = useFolder(currentPath);
 
     const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
     const [isItemModalOpen, setIsItemModalOpen] = useState(false);
@@ -67,11 +63,13 @@ export const MainPage = () => {
         return <div>Smth went wrong, folder is empty</div>;
     }
 
+    console.log(store, currentFolder);
+
     return (
         <>
             <Breadcrumb style={{ margin: "16px 0" }}>
                 {breadcrumbs.map((name, i, arr) => (
-                    <Breadcrumb.Item>
+                    <Breadcrumb.Item key={name}>
                         <Link to={`..${arr.slice(0, i + 1).join("/")}`} relative="route">
                             {i === 0 ? "main" : name}
                         </Link>
@@ -89,18 +87,14 @@ export const MainPage = () => {
                 )}
             </ButtonsContainer>
             <StyledFoldersContainer>
-                {currentFolder.childFolders.map((folderName: string) => (
-                    <Link to={`..${location.pathname}/${folderName}`} relative="route">
-                        <StyledFolder>{folderName}</StyledFolder>
+                {currentFolder.childFolders.map((folderId: string) => (
+                    <Link to={`..${location.pathname}/${folderId}`} relative="route" key={folderId}>
+                        <StyledFolder>{store.folders[folderId]?.name}</StyledFolder>
                     </Link>
                 ))}
             </StyledFoldersContainer>
             <StyledItemsContainer>
-                {currentFolder.items?.map((item) => (
-                    <StyledCard title={item.name} extra={<Button type="link">Edit</Button>} style={{ width: 300 }}>
-                        <p>{item.description || "Empty"}</p>
-                    </StyledCard>
-                ))}
+                {currentFolder?.items && Object.values(currentFolder.items).map((item) => <ItemCard {...item} />)}
             </StyledItemsContainer>
 
             <FolderModal
