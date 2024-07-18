@@ -31,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="best-list">
             <GlobalStyle />
             <StyledLayout>
                 <HeaderComonent />
