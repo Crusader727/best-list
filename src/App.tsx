@@ -1,4 +1,4 @@
-import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainPage } from "./pages/Main";
 import styled, { createGlobalStyle } from "styled-components";
 import { Layout } from "antd";
@@ -26,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     min-height: 100vh;
     font-family: Open-Sans, Helvetica, Sans-Serif;
+    background-color: white;
   }
 `;
 
