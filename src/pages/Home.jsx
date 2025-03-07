@@ -73,6 +73,7 @@ const qrCodes = [
 const QrContainer = styled.div`
     width: 400px;
     padding-top: 200px;
+    padding-left: 20px;
     padding-bottom: 200px;
     /* min-width: 100vw; */
     margin: auto;

@@ -151,6 +151,7 @@ YEoNFrAvUm8HBCfMFPg7HxhnXn3gGBtfrInNSUgJvK209LVdA41XdHclZg==
 }`],dg=mr.div`
     width: 400px;
     padding-top: 200px;
+    padding-left: 20px;
     padding-bottom: 200px;
     /* min-width: 100vw; */
     margin: auto;
